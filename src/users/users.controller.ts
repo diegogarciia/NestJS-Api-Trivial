@@ -1,16 +1,22 @@
-import { Controller, Get, Post, Put, Body, Patch, Param, Delete, UsePipes, ValidationPipe, ParseIntPipe } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { Controller, Get, Post, Put, Body, Patch, Param, Delete, UsePipes, ValidationPipe, ParseIntPipe, HttpCode, HttpStatus } from '@nestjs/common';
+import { UsuariosService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
-@UsePipes(ValidationPipe)
+@UsePipes(new ValidationPipe({  
+    whitelist: true, 
+    forbidNonWhitelisted: true, 
+    transform: true 
+}))
+
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsuariosService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @HttpCode( HttpStatus.CREATED)
+  create(@Body() createUsuarioDto: CreateUserDto) {
+    return this.usersService.create(createUsuarioDto);
   }
 
   @Get()
@@ -19,24 +25,18 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  findOne(@Param('id') id: number) {
+    return this.usersService.findOne(id);
   }
 
   @Put(':id')
-  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
-  updatePut(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
-    console.log('PUT body:', updateUserDto);
-    return this.usersService.updatePut(id, updateUserDto);
+  update(@Param('id') id: number, @Body() updateUsuarioDto: UpdateUserDto) {
+    return this.usersService.update(id, updateUsuarioDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.usersService.remove(id);
   }
+
 }
