@@ -30,7 +30,13 @@ export class UsersService {
   };
 
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    const user = new User();
+    user.id = this.generateUniqueId();
+    user.name = createUserDto.name;
+    user.email = createUserDto.email;
+    user.password = createUserDto.password;
+    this.users.push(user);
+    return user
   }
 
   findAll() {
@@ -46,6 +52,18 @@ export class UsersService {
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
+  }
+
+  updatePut(id: number, updateUserDto: UpdateUserDto) {
+    const userIndex = this.users.findIndex(user => user.id === id);
+    
+      if (userIndex === -1) {
+        return { msg: 'User not found' };
+      }
+  
+      this.users[userIndex] = { ...this.users[userIndex], ...updateUserDto };
+    
+      return this.users[userIndex];
   }
 
   remove(id: number) {
