@@ -46,6 +46,14 @@ export class UsuariosService {
     return usuario;
   }
 
+  async findEmail(email: string) {
+    const user = await this.usuarioModel.findOne({ email });
+    if (!user) {
+      throw new NotFoundException(`Usuario con email ${email} no encontrado`);
+    }
+    return user;
+  }
+
   async update(id: number, updateUsuarioDto: UpdateUserDto) {
     try {
       const { id: _, ...updateData } = updateUsuarioDto;
