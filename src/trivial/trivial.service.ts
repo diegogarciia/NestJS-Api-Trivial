@@ -10,12 +10,14 @@ export class TrivialService {
       pregunta: '¿Cuál es la capital de Italia?',
       opciones: ['Roma', 'Milán', 'Venecia', 'Florencia'],
       respuestaCorrecta: 'Roma',
+      dificultad: 'facil',
     } as Trivial,
     {
       id: 2,
       pregunta: '¿Qué planeta es conocido como el Planeta Rojo?',
       opciones: ['Júpiter', 'Saturno', 'Marte', 'Venus'],
       respuestaCorrecta: 'Marte',
+      dificultad: 'dificil',
     } as Trivial,
   ];
 
@@ -25,9 +27,17 @@ export class TrivialService {
 
   private cantidadPreguntasRespondidas: number = 0;
 
-  obtenerAleatoria() {
-    const indice = Math.floor(Math.random() * this.preguntas.length);
-    const preguntaCompleta = this.preguntas[indice];
+  obtenerAleatoria(nivel?: string) {
+    const preguntasFiltradas = nivel
+      ? this.preguntas.filter((p) => p.dificultad === nivel)
+      : this.preguntas;
+
+    if (preguntasFiltradas.length === 0) {
+      throw new NotFoundException(`No hay preguntas para el nivel: ${nivel}`);
+    }
+
+    const indice = Math.floor(Math.random() * preguntasFiltradas.length);
+    const preguntaCompleta = preguntasFiltradas[indice];
 
     const { respuestaCorrecta, ...datosPublicos } = preguntaCompleta;
 
@@ -44,9 +54,9 @@ export class TrivialService {
       throw new NotFoundException(`La pregunta con ID ${id} no existe`);
     }
 
-    this.cantidadPreguntasRespondidas++
+    this.cantidadPreguntasRespondidas++;
 
-    this.historicoRespuestas.push(opcionElegida)
+    this.historicoRespuestas.push(opcionElegida);
 
     const esCorrecta = pregunta.respuestaCorrecta === opcionElegida;
 
@@ -66,11 +76,11 @@ export class TrivialService {
   }
 
   obtenerHistoricoPreguntas() {
-    return { historico: this.historicoRespuestas }
+    return { historico: this.historicoRespuestas };
   }
 
   obtenerCantidadPreguntasRespondidas() {
-    return { cantidadPreguntasRespondidas: this.cantidadPreguntasRespondidas }
+    return { cantidadPreguntasRespondidas: this.cantidadPreguntasRespondidas };
   }
-
+  
 }

@@ -31,8 +31,8 @@ export class TrivialController {
   constructor(private readonly trivialService: TrivialService) {}
 
   @Get('random')
-  getRandomQuestion() {
-    return this.trivialService.obtenerAleatoria();
+  getRandomQuestion(@Body() body: { dificultad: string }) {
+    return this.trivialService.obtenerAleatoria(body.dificultad);
   }
 
   @Post('answer')

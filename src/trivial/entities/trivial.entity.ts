@@ -19,6 +19,9 @@ export class Trivial extends Document {
     @Prop({required: true})
     respuestaCorrecta: string;
 
+    @Prop({required: true})
+    dificultad: string;
+
 }
 
 export const TrivialSchema = SchemaFactory.createForClass(Trivial);
