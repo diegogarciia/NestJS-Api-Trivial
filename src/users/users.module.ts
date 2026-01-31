@@ -7,6 +7,7 @@ import { User, UsuarioSchema } from './entities/user.entity';
 @Module({
   controllers: [UsersController],
   providers: [UsuariosService],
+  exports: [UsuariosService],
   imports: [
     MongooseModule.forFeature([
       {
