@@ -21,6 +21,10 @@ export class TrivialService {
 
   private aciertos: number = 0;
 
+  private historicoRespuestas: string[] = [];
+
+  private cantidadPreguntasRespondidas: number = 0;
+
   obtenerAleatoria() {
     const indice = Math.floor(Math.random() * this.preguntas.length);
     const preguntaCompleta = this.preguntas[indice];
@@ -40,6 +44,10 @@ export class TrivialService {
       throw new NotFoundException(`La pregunta con ID ${id} no existe`);
     }
 
+    this.cantidadPreguntasRespondidas++
+
+    this.historicoRespuestas.push(opcionElegida)
+
     const esCorrecta = pregunta.respuestaCorrecta === opcionElegida;
 
     if (esCorrecta) {
@@ -56,4 +64,13 @@ export class TrivialService {
   obtenerPuntuacion() {
     return { aciertos: this.aciertos };
   }
+
+  obtenerHistoricoPreguntas() {
+    return { historico: this.historicoRespuestas }
+  }
+
+  obtenerCantidadPreguntasRespondidas() {
+    return { cantidadPreguntasRespondidas: this.cantidadPreguntasRespondidas }
+  }
+
 }

@@ -45,5 +45,15 @@ export class TrivialController {
   getScore() {
     return this.trivialService.obtenerPuntuacion();
   }
-  
+
+  @Get('historicoRespuestas')
+  getHistoricoRespuestas() {
+    return this.trivialService.obtenerHistoricoPreguntas();
+  }
+
+  @Get('cantidadPreguntasRespondidas')
+  getCantidadPreguntasRespondidas() {
+    return this.trivialService.obtenerCantidadPreguntasRespondidas();
+  }
+
 }
