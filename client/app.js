@@ -1,6 +1,5 @@
-const API_URL = "http://localhost:9090/api"; // Cambia al puerto donde corre tu API NestJS
+const API_URL = "http://localhost:9090/api"; 
 
-// ====== USUARIOS ======
 async function crearUsuario() {
   const id = document.getElementById("usuario-id").value;
   const nombre = document.getElementById("usuario-nombre").value;
