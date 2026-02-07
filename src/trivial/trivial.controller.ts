@@ -13,7 +13,9 @@ import {
 } from '@nestjs/common';
 import { TrivialService } from './trivial.service';
 import { CreateTrivialDto } from './dto/create-trivial.dto';
-import { JwtGuard } from 'src/auth/jwt.guard'; 
+import { JwtGuard } from 'src/auth/jwt.guard';
+import { Roles } from 'src/auth/roles/roles.decorator';
+import { RolesGuard } from 'src/auth/roles/roles.guard';
 
 @Controller('trivial')
 @UsePipes(
@@ -23,21 +25,34 @@ import { JwtGuard } from 'src/auth/jwt.guard';
     transform: true,
   }),
 )
+
 export class TrivialController {
   constructor(private readonly trivialService: TrivialService) {}
 
+  @Roles('admin')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Get('preguntas')
+  async getPreguntas(@Request() req) {
+    return await this.trivialService.todasPreguntas();
+  }
+
+  @Roles('admin')
+  @UseGuards(JwtGuard, RolesGuard)
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createTrivialDto: CreateTrivialDto) {
     return await this.trivialService.create(createTrivialDto);
   }
 
+  @Roles('admin', 'jugador')
+  @UseGuards(JwtGuard, RolesGuard)
   @Get('random')
   async getRandomQuestion(@Query('dificultad') dificultad?: string) {
     return await this.trivialService.obtenerAleatoria(dificultad);
   }
 
-  @UseGuards(JwtGuard)
+  @Roles('admin', 'jugador')
+  @UseGuards(JwtGuard, RolesGuard)
   @Post('answer')
   @HttpCode(HttpStatus.OK)
   async checkAnswer(@Request() req, @Body() body: { id: number; respuesta: string }) {
@@ -45,21 +60,24 @@ export class TrivialController {
     return await this.trivialService.verificarRespuesta(body.id, body.respuesta, usuarioId);
   }
 
-  @UseGuards(JwtGuard)
+  @Roles('admin', 'jugador')
+  @UseGuards(JwtGuard, RolesGuard)
   @Get('score')
   async getScore(@Request() req) {
     const usuarioId = req.user.id;
     return await this.trivialService.obtenerPuntuacion(usuarioId);
   }
 
-  @UseGuards(JwtGuard)
+  @Roles('admin', 'jugador')
+  @UseGuards(JwtGuard, RolesGuard)
   @Get('historicoRespuestas')
   async getHistoricoRespuestas(@Request() req) {
     const usuarioId = req.user.id;
     return await this.trivialService.obtenerHistoricoPreguntas(usuarioId);
   }
 
-  @UseGuards(JwtGuard)
+  @Roles('admin', 'jugador')
+  @UseGuards(JwtGuard, RolesGuard)
   @Get('cantidadPreguntasRespondidas')
   async getCantidadPreguntasRespondidas(@Request() req) {
     const usuarioId = req.user.id;
