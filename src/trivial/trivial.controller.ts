@@ -7,10 +7,13 @@ import {
   HttpStatus,
   UsePipes,
   ValidationPipe,
-  Query
+  Query,
+  UseGuards,
+  Request
 } from '@nestjs/common';
 import { TrivialService } from './trivial.service';
 import { CreateTrivialDto } from './dto/create-trivial.dto';
+import { JwtGuard } from 'src/auth/jwt.guard'; 
 
 @Controller('trivial')
 @UsePipes(
@@ -20,7 +23,6 @@ import { CreateTrivialDto } from './dto/create-trivial.dto';
     transform: true,
   }),
 )
-
 export class TrivialController {
   constructor(private readonly trivialService: TrivialService) {}
 
@@ -35,25 +37,33 @@ export class TrivialController {
     return await this.trivialService.obtenerAleatoria(dificultad);
   }
 
+  @UseGuards(JwtGuard)
   @Post('answer')
   @HttpCode(HttpStatus.OK)
-  async checkAnswer(@Body() body: { id: number; respuesta: string, usuarioId: number }) {
-    return await this.trivialService.verificarRespuesta(body.id, body.respuesta, body.usuarioId);
+  async checkAnswer(@Request() req, @Body() body: { id: number; respuesta: string }) {
+    const usuarioId = req.user.id; 
+    return await this.trivialService.verificarRespuesta(body.id, body.respuesta, usuarioId);
   }
 
+  @UseGuards(JwtGuard)
   @Get('score')
-  getScore() {
-    return this.trivialService.obtenerPuntuacion();
+  async getScore(@Request() req) {
+    const usuarioId = req.user.id;
+    return await this.trivialService.obtenerPuntuacion(usuarioId);
   }
 
+  @UseGuards(JwtGuard)
   @Get('historicoRespuestas')
-  getHistoricoRespuestas() {
-    return this.trivialService.obtenerHistoricoPreguntas();
+  async getHistoricoRespuestas(@Request() req) {
+    const usuarioId = req.user.id;
+    return await this.trivialService.obtenerHistoricoPreguntas(usuarioId);
   }
 
+  @UseGuards(JwtGuard)
   @Get('cantidadPreguntasRespondidas')
-  getCantidadPreguntasRespondidas() {
-    return this.trivialService.obtenerCantidadPreguntasRespondidas();
+  async getCantidadPreguntasRespondidas(@Request() req) {
+    const usuarioId = req.user.id;
+    return await this.trivialService.obtenerCantidadPreguntasRespondidas(usuarioId);
   }
 
 }
