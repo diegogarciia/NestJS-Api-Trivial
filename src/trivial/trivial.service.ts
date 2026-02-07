@@ -3,12 +3,14 @@ import { Trivial } from './entities/trivial.entity';
 import { NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { UsuariosService } from 'src/users/users.service';
 
 @Injectable()
 export class TrivialService {
 
   constructor(
     @InjectModel(Trivial.name) private trivialModel: Model<Trivial>,
+    private readonly usuariosService: UsuariosService, 
   ) {}
 
   private aciertos: number = 0;
@@ -40,17 +42,19 @@ export class TrivialService {
     return datosPublicos;
   }
 
-  async verificarRespuesta(id: number, opcionElegida: string) {
+  async verificarRespuesta(id: number, opcionElegida: string, usuarioId: number) {
     const pregunta = await this.trivialModel.findOne({ id: id });
 
     if (!pregunta) {
       throw new NotFoundException(`La pregunta con ID ${id} no existe`);
     }
 
+    const esCorrecta = pregunta.respuestaCorrecta === opcionElegida;
+
+    await this.usuariosService.updateStats(usuarioId, esCorrecta, opcionElegida);
+
     this.cantidadPreguntasRespondidas++;
     this.historicoRespuestas.push(opcionElegida);
-
-    const esCorrecta = pregunta.respuestaCorrecta === opcionElegida;
 
     if (esCorrecta) {
       this.aciertos++;

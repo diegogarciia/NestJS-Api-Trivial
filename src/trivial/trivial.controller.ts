@@ -36,8 +36,8 @@ export class TrivialController {
 
   @Post('answer')
   @HttpCode(HttpStatus.OK)
-  async checkAnswer(@Body() body: { id: number; respuesta: string }) {
-    return await this.trivialService.verificarRespuesta(body.id, body.respuesta);
+  async checkAnswer(@Body() body: { id: number; respuesta: string, usuarioId: number }) {
+    return await this.trivialService.verificarRespuesta(body.id, body.respuesta, body.usuarioId);
   }
 
   @Get('score')

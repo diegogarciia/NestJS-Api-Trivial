@@ -1,23 +1,28 @@
-import { IsEmail, IsInt, IsString, IsArray, ArrayNotEmpty, ArrayUnique } from "class-validator";
+import { IsEmail, IsInt, IsString, IsArray, ArrayNotEmpty, ArrayUnique, IsOptional, IsNumber } from "class-validator";
 
 export class CreateUserDto {
+  @IsInt()
+  id: number;
 
-    @IsInt()
-    id: number;
+  @IsString()
+  nombre: string;
 
-    @IsString()
-    nombre: string;
+  @IsEmail()
+  email: string;
 
-    @IsEmail()
-    email: string;
+  @IsString()
+  password: string;
 
-    @IsString()
-    password: string;
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  roles: string[];
 
-    @IsArray()
-    @ArrayNotEmpty()       
-    @ArrayUnique()          
-    @IsString({ each: true }) 
-    roles?: string[];
+  @IsOptional()
+  @IsNumber()
+  aciertos?: number;
 
+  @IsOptional()
+  @IsNumber()
+  preguntasRespondidas?: number;
 }
