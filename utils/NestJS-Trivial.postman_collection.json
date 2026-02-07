@@ -278,6 +278,44 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "GET TODAS PREGUNTAS",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRpZWdvYWRtaW5AZ21haWwuY29tIiwic3ViIjoxLCJyb2xlcyI6WyJhZG1pbiIsImp1Z2Fkb3IiXSwiaWF0IjoxNzcwNDcyODI1LCJleHAiOjE3NzA0NzY0MjV9.1ZSyAscuqZSSSDyNDQ5AeUjR_qge5wE7t2RL06lZ0AA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:9090/api/trivial/preguntas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "trivial",
+            "preguntas"
+          ]
+        }
+      },
+      "response": []
     }
   ]
 }

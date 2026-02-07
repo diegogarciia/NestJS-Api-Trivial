@@ -12,6 +12,16 @@ export class TrivialService {
     private readonly usuariosService: UsuariosService,
   ) {}
 
+  async todasPreguntas(): Promise<Trivial[]> {
+    const preguntas = await this.trivialModel.find().exec();
+    
+    if (!preguntas || preguntas.length === 0) {
+      throw new NotFoundException('No se encontraron preguntas en la base de datos');
+    }
+    
+    return preguntas;
+  }
+
   async create(createTrivialDto: any): Promise<Trivial> {
     const nuevaPregunta = new this.trivialModel(createTrivialDto);
     return await nuevaPregunta.save();
