@@ -2,20 +2,14 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Body,
-  Patch,
-  Param,
-  Delete,
-  UsePipes,
-  ValidationPipe,
-  ParseIntPipe,
   HttpCode,
   HttpStatus,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { TrivialService } from './trivial.service';
 import { CreateTrivialDto } from './dto/create-trivial.dto';
-import { UpdateTrivialDto } from './dto/update-trivial.dto';
 
 @Controller('trivial')
 @UsePipes(
@@ -27,18 +21,23 @@ import { UpdateTrivialDto } from './dto/update-trivial.dto';
 )
 
 export class TrivialController {
-
   constructor(private readonly trivialService: TrivialService) {}
 
+  @Post('create')
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Body() createTrivialDto: CreateTrivialDto) {
+    return await this.trivialService.create(createTrivialDto);
+  }
+
   @Get('random')
-  getRandomQuestion(@Body() body: { dificultad: string }) {
-    return this.trivialService.obtenerAleatoria(body.dificultad);
+  async getRandomQuestion(@Body() body: { dificultad: string }) {
+    return await this.trivialService.obtenerAleatoria(body.dificultad);
   }
 
   @Post('answer')
   @HttpCode(HttpStatus.OK)
-  checkAnswer(@Body() body: { id: number; respuesta: string }) {
-    return this.trivialService.verificarRespuesta(body.id, body.respuesta);
+  async checkAnswer(@Body() body: { id: number; respuesta: string }) {
+    return await this.trivialService.verificarRespuesta(body.id, body.respuesta);
   }
 
   @Get('score')
