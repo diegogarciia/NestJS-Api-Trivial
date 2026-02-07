@@ -7,6 +7,7 @@ import {
   HttpStatus,
   UsePipes,
   ValidationPipe,
+  Query
 } from '@nestjs/common';
 import { TrivialService } from './trivial.service';
 import { CreateTrivialDto } from './dto/create-trivial.dto';
@@ -30,8 +31,8 @@ export class TrivialController {
   }
 
   @Get('random')
-  async getRandomQuestion(@Body() body: { dificultad: string }) {
-    return await this.trivialService.obtenerAleatoria(body.dificultad);
+  async getRandomQuestion(@Query('dificultad') dificultad?: string) {
+    return await this.trivialService.obtenerAleatoria(dificultad);
   }
 
   @Post('answer')

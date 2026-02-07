@@ -1,4 +1,3 @@
-// Configuración base
 const API_BASE = 'http://localhost:9090/api';
 let token = null;
 let usuarioLogueadoId = null;
@@ -6,7 +5,6 @@ let currentQuestion = null;
 
 async function fetchJSON(url, options = {}) {
   if (!options.headers) options.headers = {};
-  
   if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
@@ -33,12 +31,10 @@ async function login() {
     token = res.access_token;
     usuarioLogueadoId = res.payload.sub; 
 
-    document.getElementById('loginStatus').innerText = `¡Bienvenido! ID: ${usuarioLogueadoId}`;
-    
-    // Cambiamos la interfaz
     document.getElementById('auth-section').style.display = 'none';
     document.getElementById('game-section').style.display = 'block';
     document.getElementById('playerName').innerText = res.payload.email;
+    document.getElementById('loginStatus').innerText = '';
 
   } catch (err) {
     document.getElementById('loginStatus').innerText = `Error: ${err.message}`;
@@ -47,18 +43,20 @@ async function login() {
 
 async function loadRandom() {
   try {
-    const q = await fetchJSON(`${API_BASE}/trivial/random`);
+    const diff = document.getElementById('difficultySelect').value;
+    const url = `${API_BASE}/trivial/random${diff ? `?dificultad=${diff}` : ''}`;
+    
+    const q = await fetchJSON(url);
     currentQuestion = q;
 
-    document.getElementById('statement').innerText = q.statement;
-
+    document.getElementById('statement').innerText = q.pregunta;
     const box = document.getElementById('options');
     box.innerHTML = '';
     
-    q.options.forEach(opt => {
+    q.opciones.forEach(opt => {
       const btn = document.createElement('button');
-      btn.textContent = `${opt.index}. ${opt.text}`;
-      btn.onclick = () => answerQuestion(opt.index);
+      btn.textContent = opt; 
+      btn.onclick = () => answerQuestion(opt); 
       box.appendChild(btn);
     });
 
@@ -69,7 +67,7 @@ async function loadRandom() {
 }
 
 async function answerQuestion(optionIndex) {
-  if (!currentQuestion || !usuarioLogueadoId) return;
+  if (!currentQuestion) return;
 
   try {
     const res = await fetchJSON(`${API_BASE}/trivial/answer`, {
@@ -77,8 +75,7 @@ async function answerQuestion(optionIndex) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         id: currentQuestion.id, 
-        respuesta: optionIndex,
-        usuarioId: usuarioLogueadoId 
+        respuesta: optionIndex 
       }),
     });
 
