@@ -57,6 +57,7 @@ export class TrivialService {
     this.historicoRespuestas.push(opcionElegida);
 
     if (esCorrecta) {
+      this.aciertos++;
       return { correcta: true };
     }
 
