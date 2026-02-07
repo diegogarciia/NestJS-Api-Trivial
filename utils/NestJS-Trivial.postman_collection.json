@@ -1,0 +1,283 @@
+{
+  "info": {
+    "_postman_id": "e3374b2f-f95b-42cf-9d3a-fd3c250be9f4",
+    "name": "NestJS-Trivial",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48599456"
+  },
+  "item": [
+    {
+      "name": "AÑADIR PREGUNTA",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": 5,\r\n  \"pregunta\": \"¿Cuántos jugadores tiene un equipo de baloncesto en el campo?\",\r\n  \"opciones\": [\"4\", \"5\", \"6\", \"7\"],\r\n  \"respuestaCorrecta\": \"5\",\r\n  \"dificultad\": \"facil\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:9090/api/trivial/create",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "trivial",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PREGUNTA ALEATORIA",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:9090/api/trivial/random?dificultad=facil",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "trivial",
+            "random"
+          ],
+          "query": [
+            {
+              "key": "dificultad",
+              "value": "facil",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "RESOLVER PREGUNTA",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": 1,\r\n    \"respuesta\": \"París\",\r\n    \"usuarioId\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:9090/api/trivial/answer",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "trivial",
+            "answer"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "OBTENER PUNTUACIÓN",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRpZWdvYWRtaW5AZ21haWwuY29tIiwic3ViIjoxLCJyb2xlcyI6WyJhZG1pbiIsImp1Z2Fkb3IiXSwiaWF0IjoxNzcwNDY3Njg0LCJleHAiOjE3NzA0NzEyODR9.qM6UgbF0XljNLQl8h1K5HdPHIIfYdYdT6-6vt7kZ6pc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:9090/api/trivial/score",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "trivial",
+            "score"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "HISTORICO RESPUESTAS",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRpZWdvYWRtaW5AZ21haWwuY29tIiwic3ViIjoxLCJyb2xlcyI6WyJhZG1pbiIsImp1Z2Fkb3IiXSwiaWF0IjoxNzcwNDY3Njg0LCJleHAiOjE3NzA0NzEyODR9.qM6UgbF0XljNLQl8h1K5HdPHIIfYdYdT6-6vt7kZ6pc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:9090/api/trivial/historicoRespuestas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "trivial",
+            "historicoRespuestas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CANTIDAD PREGUNTAS RESPONDIDAS",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRpZWdvYWRtaW5AZ21haWwuY29tIiwic3ViIjoxLCJyb2xlcyI6WyJhZG1pbiIsImp1Z2Fkb3IiXSwiaWF0IjoxNzcwNDY3Njg0LCJleHAiOjE3NzA0NzEyODR9.qM6UgbF0XljNLQl8h1K5HdPHIIfYdYdT6-6vt7kZ6pc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://localhost:9090/api/trivial/cantidadPreguntasRespondidas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "trivial",
+            "cantidadPreguntasRespondidas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AÑADIR USUARIO",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": 2,\r\n  \"nombre\": \"Alvaro Middleware\",\r\n  \"email\": \"alvaromiddleware@gmail.com\",\r\n  \"password\": \"alvaromiddleware123\",\r\n  \"roles\": [\"jugador\"],\r\n  \"aciertos\": 0,\r\n  \"preguntasRespondidas\": 0\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:9090/api/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "LOGIN",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"diegoadmin@gmail.com\",\r\n    \"password\": \"diego123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:9090/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

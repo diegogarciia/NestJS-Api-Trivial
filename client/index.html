@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Trivial Friki</title>
+</head>
+<body>
+  <div id="auth-section">
+    <h2>Acceso Jugador</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Contraseña">
+    <button onclick="login()">Entrar a jugar</button>
+    <p id="loginStatus"></p>
+  </div>
+
+  <hr>
+
+  <div id="game-section" style="display:none;">
+    <h2>Trivial Friki</h2>
+    <p>Bienvenido, <span id="playerName"></span></p>
+    
+    <label for="difficultySelect">Elige nivel</label>
+    <select id="difficultySelect">
+      <option value="facil">Fácil</option>
+      <option value="medio">Medio</option>
+      <option value="dificil">Difícil</option>
+    </select>
+    <br><br>
+
+    <button onclick="loadRandom()">Nueva pregunta</button>
+    <h2 id="statement"></h2>
+    <div id="options"></div>
+    <p id="status"></p>
+    
+    <hr />
+    <p>Tus Aciertos: <span id="score">0</span></p>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
