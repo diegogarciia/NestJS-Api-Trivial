@@ -3,6 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <title>Trivial Friki</title>
+  <style>
+    #admin-section {
+      border: 2px solid #444;
+      padding: 20px;
+      margin-top: 30px;
+      background-color: #f0f0f0;
+      border-radius: 8px;
+    }
+    .admin-form input, .admin-form select {
+      display: block;
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+    .question-item {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
   <div id="auth-section">
@@ -36,6 +59,27 @@
     <p>Tus Aciertos: <span id="score">0</span></p>
   </div>
 
+  <div id="admin-section" style="display:none;">
+    <h2>Panel de Administración</h2>
+    <div class="admin-form">
+      <h4>Añadir Nueva Pregunta</h4>
+      <input type="text" id="admin-pregunta" placeholder="Pregunta">
+      <input type="text" id="admin-opciones" placeholder="Opciones (ej: Opción 1, Opción 2, Opción 3)">
+      <input type="text" id="admin-correcta" placeholder="Respuesta Correcta">
+      <select id="admin-dificultad">
+        <option value="facil">Fácil</option>
+        <option value="medio">Medio</option>
+        <option value="dificil">Difícil</option>
+      </select>
+      <button onclick="createQuestion()">Guardar Pregunta</button>
+    </div>
+    
+    <hr>
+    <h4>Listado de Preguntas</h4>
+    <button onclick="listQuestions()">Actualizar Lista</button>
+    <div id="questions-list"></div>
+  </div>
+  
   <script src="app.js"></script>
 </body>
 </html>

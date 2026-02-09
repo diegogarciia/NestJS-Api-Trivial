@@ -36,6 +36,12 @@ async function login() {
     document.getElementById('playerName').innerText = res.payload.email;
     document.getElementById('loginStatus').innerText = '';
 
+    const userRole = res.payload.roles || res.payload.role;
+    if (userRole === 'admin' || (Array.isArray(userRole) && userRole.includes('admin'))) {
+        document.getElementById('admin-section').style.display = 'block';
+        listQuestions();
+    }
+
   } catch (err) {
     document.getElementById('loginStatus').innerText = `Error: ${err.message}`;
   }
@@ -89,4 +95,65 @@ async function answerQuestion(optionIndex) {
   } catch (err) {
     document.getElementById('status').innerText = `Error: ${err.message}`;
   }
+}
+
+async function listQuestions() {
+    try {
+        const preguntas = await fetchJSON(`${API_BASE}/trivial/preguntas`);
+        const container = document.getElementById('questions-list');
+        container.innerHTML = '';
+
+        preguntas.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'question-item';
+            div.innerHTML = `${p.pregunta} <em>(${p.dificultad})</em>`;
+            container.appendChild(div);
+        });
+        return preguntas;
+    } catch (err) {
+        console.error("Error al listar:", err);
+    }
+}
+
+async function createQuestion() {
+    const preguntaText = document.getElementById('admin-pregunta').value;
+    const opcionesText = document.getElementById('admin-opciones').value;
+    const correctaText = document.getElementById('admin-correcta').value;
+    const dificultad = document.getElementById('admin-dificultad').value;
+
+    if (!preguntaText || !opcionesText || !correctaText) {
+        alert("Por favor, rellena todos los campos.");
+        return;
+    }
+
+    try {
+        const preguntas = await fetchJSON(`${API_BASE}/trivial/preguntas`);
+        const maxId = preguntas.reduce((max, p) => (p.id > max ? p.id : max), 0);
+        const nextId = maxId + 1;
+
+        const opcionesArray = opcionesText.split(',').map(opt => opt.trim());
+        const nuevaPregunta = {
+            id: nextId,
+            pregunta: preguntaText,
+            opciones: opcionesArray,
+            respuestaCorrecta: correctaText,
+            dificultad: dificultad
+        };
+
+        await fetchJSON(`${API_BASE}/trivial/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(nuevaPregunta),
+        });
+
+        alert(`Pregunta creada con ID: ${nextId}`);
+        
+        document.getElementById('admin-pregunta').value = '';
+        document.getElementById('admin-opciones').value = '';
+        document.getElementById('admin-correcta').value = '';
+        listQuestions();
+
+    } catch (err) {
+        alert("Error al crear pregunta: " + err.message);
+    }
 }
